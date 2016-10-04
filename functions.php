@@ -1,4 +1,5 @@
 <?php
+require("../../config.php");
   // functions.php
   /*
 	function sum($x,$y)
@@ -66,6 +67,38 @@
 		$mysqli->close();
 	}
 	
+	function saveCar($carNumber,$carColor)
+	{
+		$database = "if16_stanislav";
+		$mysqli = new mysqli($GLOBALS["serverHost"],$GLOBALS["serverUsername"],$GLOBALS["serverPassword"], $database);
+		
+		// sqli rida
+		$stmt = $mysqli->prepare("INSERT INTO car_and_colors (plate,color) VALUES (?,?)");
+		
+		
+		echo $mysqli->error; // !!! Kui läheb midagi valesti, siis see käsk printib viga
+		
+		// stringina üks täht iga muutuja kohta (?), mis tüüp
+		// string - s
+		// integer - i
+		// float (double) - d
+		$stmt->bind_param("ss",$carNumber,$carColor); // sest on email ja password VARCHAR - STRING , ehk siis email - s, password - sa
+		
+		//täida käsku
+		if($stmt->execute())
+		{
+			echo "salvsestamine õnnestus";
+		}
+		else
+		{
+			echo "ERROR ".$stmt->error;
+		}
+		
+		//panen ühenduse kinni
+		$stmt->close();
+		$mysqli->close();
+	}
+	
 	function login ($email,$password)
 	{
 		$error = "";
@@ -103,6 +136,9 @@
 				//maaran sessiooni muutujad, millele saan ligi teestelt lehtedelt
 				$_SESSION["userID"] = $id;
 				$_SESSION["userEmail"] = $emailFromDb;
+				
+				
+				$_SESSION["message"] = "<h1>Tere tulemast!</h1>";
 				
 				header("Location: data.php");
 				
