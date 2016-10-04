@@ -1,6 +1,5 @@
 <?php
 
-require("../../config.php");
 require("functions.php");
 
 // KUI ON juba sisse loginud siis suunan data.php lehele

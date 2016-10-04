@@ -31,6 +31,11 @@
 		saveCar($_POST["carPlate"],$_POST["carColor"]);
 	}
 	
+	$carData = getAllCars();
+	//echo "<pre>";
+	//var_dump($carData);
+	//echo "</pre>";
+	
 ?>
 <link rel="stylesheet" type="text/css" href="style.css">
 <!-- lisasin 'Nunito' fonti -->
@@ -39,7 +44,6 @@
 <?=$msg;?>
 <p>Tere tulemast <?=$_SESSION["userEmail"];?>!</p>
 <a href="?logout=1">Logi välja</a>
-
 
 <form method="POST">
 	<h1>Salvesta autot</h1>
@@ -52,3 +56,48 @@
 	<input type="submit" value="Save car" class="button">
 </form>
 
+<h1>Autod</h1>
+
+<?php
+// th - table header
+// td - table data
+// tr - table row
+
+	$html = "<table style='border:1px solid;margin:0 auto;'>";
+
+	$html .="<tr>";
+		$html .="<th>id</th>";
+		$html .="<th>plate</th>";
+		$html .="<th>color</th>";
+	$html .="</tr>";
+	
+	
+	
+	// iga liikme kohta masiivis
+	foreach($carData as $item)
+	{
+		// iga auto on $c
+	$html .="<tr>";
+		$html .="<td style='border:1px solid;'>".$item->id."</td>";
+		$html .="<td style='border:1px solid;'>".$item->plate."</td>";
+		$html .="<td style='border:1px solid; padding:10px;background-color:".$item->carColor."'>".$item->carColor."</td>";
+	$html .="</tr>";
+		
+	}
+
+	$html .="</table>";
+	echo $html;
+	
+	$listHtml = "<br><br>";
+	
+	foreach($carData as $item)
+	{
+		// iga auto on $item
+		
+		$listHtml .= "<h1 style='color:".$item->carColor."'>".$item->plate."</h1>";
+		$listHtml .= "<h1>color = ".$item->carColor."</h1>";
+			
+	}
+	
+	echo $listHtml;
+?>

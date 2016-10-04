@@ -157,5 +157,52 @@ require("../../config.php");
 		return $error;
 	}
 	
+	function getAllCars()
+	{
+		$database = "if16_stanislav";
+		$mysqli = new mysqli($GLOBALS["serverHost"],$GLOBALS["serverUsername"],$GLOBALS["serverPassword"], $database);
+		
+		// sqli rida
+		$stmt = $mysqli->prepare("SELECT id,plate,color FROM car_and_colors");
+		
+		//maaran vaartused muutujatesse
+		
+		$stmt ->bind_result($id,$plate,$color);
+		$stmt->execute();
+		
+		
+		//tekitan massiivi
+		$result=array();
+		
+		
+		//tee seda seni, kuni on rida andmeid
+		//mis vastab select lausele
+		//fetch annab andmeid uhe rea kaupa
+		while($stmt->fetch())
+		{
+			//tekitan objekti
+			$car = new StdClass();
+			
+			$car->id = $id;
+			$car->plate = $plate;
+			$car->carColor = $color;
+			
+			//echo $plate."<br>";
+			//iga kord massiivi lisan juurde nr. m2rgi
+			array_push($result,$car);
+		}
+		
+		$stmt->close();
+		$mysqli->close();
+		
+		return $result;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 ?>
